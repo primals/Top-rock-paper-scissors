@@ -1,47 +1,36 @@
 
 function playRound (humanChoice, computerChoice) {
     if (humanChoice == computerChoice) {
-        console.log("tie");
         return 0
     }
     else {
         if (humanChoice == "paper") {
             if (computerChoice == "scissors") {
-                console.log("you lose! scissors beats paper")
                 return -1;
             }
             else {
-                console.log("you win! paper beats rock")
                 return 1;
             }
         }
         else if (humanChoice == "scissors") {
             if (computerChoice == "rock") {
-                console.log("you lose! rock beats scissors")
                 return -1;
             }
             else {
-                console.log("you win! scissors beats paper")
                 return 1;
             }
         }
         else {
             if (computerChoice == "paper") {
-                console.log("you lose! paper beats rock")
                 return -1;
             }
             else {
-                console.log("you win! rock beats scissors")
                 return 1;
             }
         }
     }
 }
 
-function humanChoice() {
-    let userChoice = window.prompt("rock paper or scissor?");
-    return userChoice;
-}
 
 function computerChoice() {
     let rng = Math.floor(Math.random() * 100) % 3;
@@ -58,25 +47,71 @@ function computerChoice() {
 let humanScore = 0;
 let computerScore = 0;
 
-for (let i = 0; i < 5; i++) {
-    const humanSelection = humanChoice().toLowerCase();
-    const computerSelection = computerChoice();
-    const winner = playRound(humanSelection, computerSelection);
+const container = document.querySelector("#container");
 
-    if (winner == 1) {
+const paper = document.createElement("button");
+paper.textContent = "Paper";
+paper.setAttribute("id", "paper");
+
+const rock = document.createElement("button");
+rock.textContent = "Rock"
+rock.setAttribute("id", "rock");
+const scissors = document.createElement("button");
+scissors.textContent = "Scissors"
+scissors.setAttribute("id", "scissors");
+
+const scores = document.createElement("div");
+scores.textContent = "human score: " + humanScore +  " computer score: " + computerScore;
+
+container.appendChild(paper);
+container.appendChild(rock);
+container.appendChild(scissors);
+container.appendChild(scores);
+
+
+container.addEventListener("click", (event) => {
+    let target = event.target;
+    let winner = 0;
+
+    switch(target.id) {
+        case "paper":
+            console.log("You win!!");
+            winner = playRound("psaper", computerChoice());
+            updateScore(winner);
+            break;
+        case "rock":
+            console.log("You win!!");
+            winner = playRound("rock", computerChoice());
+            updateScore(winner);
+            break;
+        case "scissors":
+            console.log("You win!!");
+            winner = playRound("scissors", computerChoice());
+            updateScore(winner);
+            break;
+    }
+})
+
+function updateScore(newScore) {
+    if (newScore == 1) {
         humanScore++;
     }
-    else if (winner == -1) {
+    else if (newScore == -1) {
         computerScore++;
     }
-    console.log("human score: " + humanScore);
-    console.log("computer score: " + computerScore);
+    scores.textContent = "human score: " + humanScore +  " computer score: " + computerScore;
+
+    if (humanScore == 5) {
+        scores.textContent = "You Win!";
+        humanScore = 0;
+        computerScore = 0;
+    }
+    else if (computerScore == 5) {
+        scores.textContent = "You Lose";
+        humanScore = 0;
+        computerScore = 0;
+    }
 }
 
-if (humanScore > computerScore) {
-    console.log("You win!!");
-}
-else {
-    console.log("you lose :(");
-}
+
 
